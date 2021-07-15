@@ -13,10 +13,11 @@ import requests
 import random
 # caculate distance node to node
 def distance(from_node , to_node):
-	lon1=from_node[0]
-	lat1=from_node[1]
-	lon2=to_node[0]
-	lat2=to_node[1]
+	lon1=float(from_node[0])
+	lat1=float(from_node[1])
+	lon2=float(to_node[0])
+	lat2=float(to_node[1])
+	
 	R=6378137                               # radius of Earth in meters
 	phi_1=math.radians(lat1)
 	phi_2=math.radians(lat2)
@@ -67,32 +68,36 @@ def travellingSalesmanProblem(graph, s):
 	min_route=[]
 	a=0
 	min_path = maxsize
+	print(min_path)
 	next_permutation=permutations(vertex)
 	temp=0
 	for i in next_permutation:
-
+		print(i)
 		# store current Path weight(cost)
 		current_pathweight = 0
-
+		
 		# compute current path weight
 		k = s
 		for j in i:
 			current_pathweight += graph[k][j]
 			k = j
-			if current_pathweight > min_path:
-				temp=1
-				break
-		if temp==1:
-			continue
+		# 	if current_pathweight > min_path:
+		# 		temp=1
+		# 		break
+		# if temp==1:
+		# 	continue
 		current_pathweight += graph[k][s]
 
 		# update minimum
 		if min_path > current_pathweight:
 			min_path = current_pathweight
+			
 			min_route=i
-		# min_path = min(min_path, current_pathweight)
-	min_route=(s,)+min_route+(s,)
+		
+		print(current_pathweight)
+	min_route=(s,)+min_route+(s,)+('T',)
 	# push Thingsboard
+	print(min_route)
 	return min_route
 
 
@@ -128,14 +133,21 @@ def getDataThingsboard(accessToken):
 if __name__ == "__main__":
 
 	
-	# data_location=[(288, 149), (288, 129), (270, 133), (256, 141), (256, 157), (246, 157),]
-	"""
+	
+	accessToken="34a3f510-defb-11eb-bb75-a1672e109977"
 	dataJson=getDataThingsboard(accessToken)
-	data1node=(dataJson['Lat_nodeA']['value'],dataJson['Lon_nodeA']['value'])
+	data1node=(dataJson['Lat_node0'][0]['value'],dataJson['Lon_node0'][0]['value'])
+	
 	data_location=[]
 	data_location.append(data1node)
-	"""
-	# pushThingsboard()
+	data_location.append((dataJson['Lat_NodeA'][0]['value'],dataJson['Lon_NodeA'][0]['value']))
+	data_location.append((dataJson['Lat_NodeB'][0]['value'],dataJson['Lon_NodeB'][0]['value']))
+	data_location.append((dataJson['Lat_NodeC'][0]['value'],dataJson['Lon_NodeC'][0]['value']))
+	data_location.append((dataJson['Lat_NodeD'][0]['value'],dataJson['Lon_NodeD'][0]['value']))
+	# data_location=[('21.006553', '105.842921'), ('21.0066095', '105.8431323'), ('21.0065419', '105.8432735'), ('21.0064809', '105.8431522'), ('21.0065144', '105.8429997')]
+	# data_location=[('21.006553', '105.842921'), ('21.0066095', '105.8431323'), ('21.0065144', '105.8429997'), ('21.0065419', '105.8432735'), ('21.0064809', '105.8431522')]
+	print(data_location)
+	pushThingsboard('4oEJi3aA5Gya2hpY3jRU',data_location)
 	
  
 	
