@@ -46,7 +46,7 @@ def pushThingsboard(ACCESS_TOKEN,data_location):
 	client.loop_start()
 	
 	try:
-		sensor_data['route'] = travellingSalesmanProblem(locationToGraph(data_location),0)
+		sensor_data['TSP'] = travellingSalesmanProblem(locationToGraph(data_location),0)
 		client.publish('v1/devices/me/telemetry',json.dumps(sensor_data))
 		time.sleep(10)
 	except KeyboardInterrupt:
@@ -133,21 +133,29 @@ def getDataThingsboard(accessToken):
 if __name__ == "__main__":
 
 	
-	
-	accessToken="34a3f510-defb-11eb-bb75-a1672e109977"
+	# truyen vao device id de goi getDataThingsboard
+	accessToken="7a4d7320-e900-11eb-89a9-0d04d3fed54d"
 	dataJson=getDataThingsboard(accessToken)
-	data1node=(dataJson['Lat_node0'][0]['value'],dataJson['Lon_node0'][0]['value'])
+	# 
+	data1node=(dataJson['Lat_UAV'][0]['value'],dataJson['Lon_UAV'][0]['value'])
 	
 	data_location=[]
 	data_location.append(data1node)
-	data_location.append((dataJson['Lat_NodeA'][0]['value'],dataJson['Lon_NodeA'][0]['value']))
-	data_location.append((dataJson['Lat_NodeB'][0]['value'],dataJson['Lon_NodeB'][0]['value']))
-	data_location.append((dataJson['Lat_NodeC'][0]['value'],dataJson['Lon_NodeC'][0]['value']))
-	data_location.append((dataJson['Lat_NodeD'][0]['value'],dataJson['Lon_NodeD'][0]['value']))
+	data_location.append((dataJson['Lat_sensor0'][0]['value'],dataJson['Lon_sensor0'][0]['value']))
+	data_location.append((dataJson['Lat_sensor1'][0]['value'],dataJson['Lon_sensor1'][0]['value']))
+	data_location.append((dataJson['Lat_sensor2'][0]['value'],dataJson['Lon_sensor2'][0]['value']))
+	data_location.append((dataJson['Lat_sensor3'][0]['value'],dataJson['Lon_sensor3'][0]['value']))
+	data_location.append((dataJson['Lat_sensor4'][0]['value'],dataJson['Lon_sensor4'][0]['value']))
+	data_location.append((dataJson['Lat_sensor5'][0]['value'],dataJson['Lon_sensor5'][0]['value']))
+	data_location.append((dataJson['Lat_sensor6'][0]['value'],dataJson['Lon_sensor6'][0]['value']))
 	# data_location=[('21.006553', '105.842921'), ('21.0066095', '105.8431323'), ('21.0065419', '105.8432735'), ('21.0064809', '105.8431522'), ('21.0065144', '105.8429997')]
 	# data_location=[('21.006553', '105.842921'), ('21.0066095', '105.8431323'), ('21.0065144', '105.8429997'), ('21.0065419', '105.8432735'), ('21.0064809', '105.8431522')]
 	print(data_location)
-	pushThingsboard('4oEJi3aA5Gya2hpY3jRU',data_location)
+	# print(type(float(data_location[0][0])))
+	
+	# truyen vao accestoken de goi pushThingsboard
+	pushThingsboard('SsphMB7IqFfizf7IExbT',data_location)
+	
 	
  
 	
